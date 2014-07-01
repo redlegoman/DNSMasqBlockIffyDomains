@@ -1,0 +1,8 @@
+## Manual Domains 
+## Enter specific websites you want blocking here.
+## For example to block images.facebook.com, uncomment the following:
+### images.facebook.com
+## To block facebook.com and all subdomains, uncomment the following:
+#### facebook.com
+## To block every .com domain, uncomment the follow:
+### com
