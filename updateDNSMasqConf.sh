@@ -20,7 +20,7 @@ echo "Generating new blocked Address file"
 $GENERATECMD
 
 ## check the temp file exists OK before overwriting the existing list
-if  [[ ! -s $TMPFILE ]] ; then
+if [[ ! -s $TMPFILE ]] ; then
 	echo "Temp file '$TMPFILE' either doesn't exist or is empty; quitting"
 	exit
 fi
