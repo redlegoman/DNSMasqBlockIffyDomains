@@ -85,6 +85,7 @@ def listToFile( filename, lst ):
 #--------------------------------------------------------------------------------
 def downloadToFile( url, targetFile ):
     """ Copy the contents of a file from a given URL to a local file. """
+	print( ' - ' + targetFile )
     webFile = urllib.urlopen(url)
     localFile = open(targetFile, 'w')
     localFile.write(webFile.read())

@@ -2,35 +2,37 @@
 ### Script that appends address records to the DNSMasq.conf file
 ###
 
-## Call the Python script to generate 'addresses.new'
-echo "Generating new blocked Address file"
-./buildListOfDomainsToBlock.py
+### Script Settings ----------------------------------------------------------- 
+BASEDIR="/usr/local/src/DNSMasqBlockIffyDomains"
+GENERATECMD="$BASEDIR/buildListOfDomainsToBlock.py"
 
-configfile=/etc/dnsmasq.conf
+## temp files to use
+TMPFILE="$BASEDIR/addresses.new"
+TMPCONFFILE="$BASEDIR/dnsmasq.conf.$$"
 
 ## command to reload dnsmasq - change according to your system
 ## not sure if we need this for dnsmasq
-reloadcmd='/etc/init.d/dnsmasq restart'
+RELOADCMD="/etc/init.d/dnsmasq restart"
+CONFIGFILE="/etc/dnsmasq.conf"
 
-## temp files to use
-tmpfile="addresses.new"
-tmpconffile="dnsmasq.conf.$$"
+## Call the Python script to generate 'addresses.new'
+echo "Generating new blocked Address file"
+$GENERATECMD
 
 ## check the temp file exists OK before overwriting the existing list
-if  [ ! -s $tmpfile ]
-then
-echo "Temp file '$tmpfile' either doesn't exist or is empty; quitting"
-exit
+if  [[ ! -s $TMPFILE ]] ; then
+	echo "Temp file '$TMPFILE' either doesn't exist or is empty; quitting"
+	exit
 fi
 
 ## get a fresh list of ad server addresses for dnsmasq to refuse
-cat $configfile | grep -v "address=" > $tmpconffile
+cat $CONFIGFILE | grep -v "address=" > $TMPCONFFILE
 
 while read line; do
-    echo "${line}" >> $tmpconffile
-done < $tmpfile
+    echo "${line}" >> $TMPCONFFILE
+done < $TMPFILE
 
-mv $tmpconffile $configfile
-$reloadcmd
+mv $TMPCONFFILE $CONFIGFILE
+$RELOADCMD
 
 exit
