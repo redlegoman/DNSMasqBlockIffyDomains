@@ -20,4 +20,4 @@ No need to run these scripts more than once a week as updates don't happen on a 
 
 **CRON Task** to run every Sunday at midnight:
 
-    0 0 * * 0 /<path to scripts>/updateDNSMasqConf.sh > /dev/null 2>&1
+    0 0 * * 0 /usr/local/src/DNSMasqBlockIffyDomains/updateDNSMasqConf.sh > /dev/null 2>&1
