@@ -2,7 +2,7 @@
 
 Python and Bash script combo.
 
-Objective, is downloading domain lists from the following websites:
+Simple objective to downloading and parse domain lists from the following websites:
 * http://www.malwaredomains.com
 * http://winhelp2002.mvps.org/hosts.htm
 * http://pgl.yoyo.org
@@ -20,4 +20,4 @@ No need to run these scripts more than once a week as updates don't happen on a 
 
 **CRON Task** to run every Sunday at midnight:
 
-    0 0 * * 0 /<path to scripts>/updateDNSMasqConf.sh >> /dev/null 2>&1
+    0 0 * * 0 /<path to scripts>/updateDNSMasqConf.sh > /dev/null 2>&1

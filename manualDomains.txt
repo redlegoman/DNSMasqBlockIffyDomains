@@ -4,5 +4,5 @@
 ### images.facebook.com
 ## To block facebook.com and all subdomains, uncomment the following:
 #### facebook.com
-## To block every .com domain, uncomment the follow:
+## To block every .com domain (bewarned a lot of key sites are .com), uncomment the follow:
 ### com

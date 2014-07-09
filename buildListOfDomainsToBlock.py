@@ -86,11 +86,15 @@ def listToFile( filename, lst ):
 def downloadToFile( url, targetFile ):
     """ Copy the contents of a file from a given URL to a local file. """
     print( ' - ' + targetFile )
-    webFile = urllib.urlopen(url)
-    localFile = open(targetFile, 'w')
-    localFile.write(webFile.read())
-    webFile.close()
-    localFile.close()
+
+    try:
+        webFile = urllib.urlopen(url)
+        localFile = open(targetFile, 'w')
+        localFile.write(webFile.read())
+        webFile.close()
+        localFile.close()
+    except Exception, e:
+        print(' Errored: ' + e)
 
 #--------------------------------------------------------------------------------
 def splitLine( line, elementNo, csvChar ):
