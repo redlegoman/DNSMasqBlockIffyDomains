@@ -24,6 +24,7 @@ mvpsHosts = ['http://winhelp2002.mvps.org/hosts.txt', 'mvpshosts.txt']
 malwareDomains = ['http://mirror1.malwaredomains.com/files/domains.txt', 'malwaredomains.txt']
 pglYoyoOrg = ['http://pgl.yoyo.org/as/serverlist.php?hostformat=hosts&showintro=1&mimetype=plaintext', 'pglYoyoOrg.txt']
 manualDomains = 'manualDomains.txt'
+goodDomains = 'goodDomains.txt'
 
 outputFile = 'addresses.new'
 outputFormat = 'address="/%s/127.0.0.1"\n'
@@ -34,11 +35,7 @@ def reverseString( strng ):
     return strng[::-1]
 
 #--------------------------------------------------------------------------------
-def removePointlessSubdomains( domain ):
-    """ Remove pointless subdomains from domain. No point having www. or m.,
-    just work on higher domain """
-    subDomains = ['www.','m.']
-
+def removePointlessSubdomains( domain, subDomains ):
     for subD in subDomains:
         if( domain[0:len(subD)] == subD):
             domain = domain[len(subD):]
@@ -129,6 +126,11 @@ def parseHostsFile( srcFile, csvChar, elementNo ):
     """ Parse the hosts file, strip the IP Address, any unwanted prefix, append to targetFile
         """
     domains = []
+    
+    """ Remove pointless subdomains from domain. No point having www. or m.,
+        just work on higher domain """
+    subDomains = ['www.','m.']
+    
     if( os.path.isfile(srcFile) ):
         for line in open( srcFile, 'r'):
             newDomain = parseLine( line, csvChar, elementNo )
@@ -136,7 +138,7 @@ def parseHostsFile( srcFile, csvChar, elementNo ):
 
             #** Check not blank or localhost, never want them
             if( ['','localhost'].count( newDomain ) == 0 ):
-                newDomain = removePointlessSubdomains( newDomain )
+                newDomain = removePointlessSubdomains( newDomain, subDomains )
                 newDomain = reverseString( newDomain )
                 domains.append( newDomain )
 
@@ -166,6 +168,7 @@ if __name__ == '__main__':
 
     #** Create the empty domain list
     domains = []
+    safeDomains = []
 
     #** Populate with our own set of domains, TLDs to block
     domains.extend(parseHostsFile( manualDomains, '', 0) )
@@ -177,6 +180,15 @@ if __name__ == '__main__':
     domains.extend( parseHostsFile( pglYoyoOrg[1], '', 1) )
 
     print( 'Original: ' + str(len(domains)) )
+    
+    #** Get Safe Domains
+    safeDomains.extend( parseHostsFile( goodDomains, '', 0) )
+    print( 'Good domains:' +  str(len(safeDomains) ) )
+    for p in safeDomains: 
+        if p in domains: 
+            domains.remove(p) 
+    
+    print( 'Original less Good domains: ' + str(len(domains)) )
     newDomains = superRemoveDomains( domains )
 
     #** Remove duplicates

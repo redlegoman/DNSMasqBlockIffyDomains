@@ -1,0 +1,3 @@
+## Manual Safe Domains 
+## Enter specific websites you DON'T want blocking here.
+www.googletagservices.com
