@@ -23,10 +23,10 @@ from time import gmtime, strftime
 mvpsHosts = ['http://winhelp2002.mvps.org/hosts.txt', 'mvpshosts.txt']
 malwareDomains = ['http://mirror1.malwaredomains.com/files/domains.txt', 'malwaredomains.txt']
 pglYoyoOrg = ['http://pgl.yoyo.org/as/serverlist.php?hostformat=hosts&showintro=1&mimetype=plaintext', 'pglYoyoOrg.txt']
-manualDomains = 'manualDomains.txt'
-goodDomains = 'goodDomains.txt'
+domainBlacklist = 'domainBlacklist.conf'
+domainWhitelist = 'domainWhitelist.conf'
 
-outputFile = 'addresses.new'
+outputFile = 'dnsmasq.blockeddomains.conf'
 outputFormat = 'address="/%s/127.0.0.1"\n'
 
 #--------------------------------------------------------------------------------
@@ -171,7 +171,7 @@ if __name__ == '__main__':
     safeDomains = []
 
     #** Populate with our own set of domains, TLDs to block
-    domains.extend(parseHostsFile( manualDomains, '', 0) )
+    domains.extend(parseHostsFile( domainBlacklist, '', 0) )
     #print [ reverseString(x) for x in domains]
 
     #** Populate with downloaded content
@@ -182,8 +182,8 @@ if __name__ == '__main__':
     print( 'Original: ' + str(len(domains)) )
     
     #** Get Safe Domains
-    safeDomains.extend( parseHostsFile( goodDomains, '', 0) )
-    print( 'Good domains:' +  str(len(safeDomains) ) )
+    safeDomains.extend( parseHostsFile( domainWhitelist, '', 0) )
+    print( 'Good domains: ' +  str(len(safeDomains) ) )
     for p in safeDomains: 
         if p in domains: 
             domains.remove(p) 
