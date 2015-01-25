@@ -1,8 +1,4 @@
-
-addresses.new
-
 malwaredomains.txt
-
 mvpshosts.txt
-
 pglYoyoOrg.txt
+dnsmasq.blockeddomains.conf
