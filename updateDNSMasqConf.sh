@@ -57,7 +57,7 @@ then
 fi
 
 ## Move to the destination folder
-mv $TMPFILE $CONFIGFILE
+mv $TMPFILE $CONFIGDIR
 
 ## Restart DNSMasq
 $RELOADCMD
