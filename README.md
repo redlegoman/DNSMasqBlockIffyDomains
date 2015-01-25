@@ -14,9 +14,14 @@ Similarly you can whitelist domains in the file `domainsWhitelist.conf`
 
 The *Bash* script takes this generated **DnsMasq Address** formatted file (`dnsmasq.blockeddomains.conf`) and places it in the standard `/etc/dnsmasq.d` folder to be picked up on service restart. 
 
+## Installation ##
+    cd /usr/local/src/
+    sudo git clone https://github.com/AndersUk/DNSMasqBlockIffyDomains.git 
+
 ## Usage ##
 No need to run these scripts more than once a week as updates don't happen on a regular basis, plus we don't want to cause unnecessary costs to these great services
 
+    cd /usr/local/src/DNSMasqBlockIffyDomains
     ./updateDNSMasqConf.sh
 
 **CRON Task** to run every Sunday at midnight:
