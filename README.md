@@ -22,9 +22,10 @@ The *Bash* script takes this generated **DnsMasq Address** formatted file (`dnsm
 No need to run these scripts more than once a week as updates don't happen on a regular basis, plus we don't want to cause unnecessary costs to these great services
 
     cd /usr/local/src/DNSMasqBlockIffyDomains
-    ./updateDNSMasqConf.sh
+    sudo ./updateDNSMasqConf.sh
 
 **CRON Task** to run every Sunday at midnight:
+    
     sudo crontab -e
-
+    
     0 0 * * 0 /usr/local/src/DNSMasqBlockIffyDomains/updateDNSMasqConf.sh > /dev/null 2>&1
