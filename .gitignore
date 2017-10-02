@@ -1,4 +1,8 @@
 malwaredomains.txt
 mvpshosts.txt
 pglYoyoOrg.txt
+someonewhocares.txt
 dnsmasq.blockeddomains.conf
+domainBlacklist.conf
+domainWhitelist.conf
+*.json

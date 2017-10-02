@@ -23,6 +23,7 @@ from time import gmtime, strftime
 mvpsHosts = ['http://winhelp2002.mvps.org/hosts.txt', 'mvpshosts.txt']
 malwareDomains = ['http://mirror1.malwaredomains.com/files/domains.txt', 'malwaredomains.txt']
 pglYoyoOrg = ['http://pgl.yoyo.org/as/serverlist.php?hostformat=hosts&showintro=1&mimetype=plaintext', 'pglYoyoOrg.txt']
+someoneWhoCares = ['http://someonewhocares.org/hosts/hosts', 'someonewhocares.txt']
 domainBlacklist = 'domainBlacklist.conf'
 domainWhitelist = 'domainWhitelist.conf'
 
@@ -162,9 +163,10 @@ if __name__ == '__main__':
     args = parser.parse_args()
     if( args.skipdownload == False ):
         print( 'Downloading...' )
-        downloadToFile( mvpsHosts[0], mvpsHosts[1] )
-        downloadToFile( malwareDomains[0], malwareDomains[1] )
-        downloadToFile( pglYoyoOrg[0], pglYoyoOrg[1] )
+        # downloadToFile( mvpsHosts[0], mvpsHosts[1] )
+        # downloadToFile( malwareDomains[0], malwareDomains[1] )
+        # downloadToFile( pglYoyoOrg[0], pglYoyoOrg[1] )
+        # downloadToFile( someoneWhoCares[0], someoneWhoCares[1] )
 
     #** Create the empty domain list
     domains = []
@@ -178,16 +180,19 @@ if __name__ == '__main__':
     domains.extend( parseHostsFile( mvpsHosts[1], '', 1) )
     domains.extend( parseHostsFile( malwareDomains[1], '\t', 2)[:] )
     domains.extend( parseHostsFile( pglYoyoOrg[1], '', 1) )
+    domains.extend( parseHostsFile( someoneWhoCares[1], '', 1) )
 
     print( 'Original: ' + str(len(domains)) )
     
     #** Get Safe Domains
     safeDomains.extend( parseHostsFile( domainWhitelist, '', 0) )
+    safeTuple = tuple( safeDomains )
     print( 'Good domains: ' +  str(len(safeDomains) ) )
-    for p in safeDomains: 
-        if p in domains: 
-            domains.remove(p) 
-    
+    for domain in domains[:]:
+        if domain.startswith(safeTuple):
+            print( ' > ' + reverseString(domain) + ' whitelisted')
+            domains.remove(domain)
+        
     print( 'Original less Good domains: ' + str(len(domains)) )
     newDomains = superRemoveDomains( domains )
 
