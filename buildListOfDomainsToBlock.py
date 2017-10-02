@@ -163,10 +163,10 @@ if __name__ == '__main__':
     args = parser.parse_args()
     if( args.skipdownload == False ):
         print( 'Downloading...' )
-        # downloadToFile( mvpsHosts[0], mvpsHosts[1] )
+        downloadToFile( mvpsHosts[0], mvpsHosts[1] )
         # downloadToFile( malwareDomains[0], malwareDomains[1] )
-        # downloadToFile( pglYoyoOrg[0], pglYoyoOrg[1] )
-        # downloadToFile( someoneWhoCares[0], someoneWhoCares[1] )
+        downloadToFile( pglYoyoOrg[0], pglYoyoOrg[1] )
+        downloadToFile( someoneWhoCares[0], someoneWhoCares[1] )
 
     #** Create the empty domain list
     domains = []
@@ -174,11 +174,10 @@ if __name__ == '__main__':
 
     #** Populate with our own set of domains, TLDs to block
     domains.extend(parseHostsFile( domainBlacklist, '', 0) )
-    #print [ reverseString(x) for x in domains]
 
     #** Populate with downloaded content
     domains.extend( parseHostsFile( mvpsHosts[1], '', 1) )
-    domains.extend( parseHostsFile( malwareDomains[1], '\t', 2)[:] )
+    # domains.extend( parseHostsFile( malwareDomains[1], '\t', 2)[:] )
     domains.extend( parseHostsFile( pglYoyoOrg[1], '', 1) )
     domains.extend( parseHostsFile( someoneWhoCares[1], '', 1) )
 
