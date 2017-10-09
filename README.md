@@ -29,3 +29,5 @@ No need to run these scripts more than once a week as updates don't happen on a 
     sudo crontab -e
     
     0 0 * * 0 cd /usr/local/src/DNSMasqBlockIffyDomains/; sudo updateDNSMasqConf.sh > /dev/null 2>&1
+
+## test ##
