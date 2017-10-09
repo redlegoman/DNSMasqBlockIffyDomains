@@ -3,10 +3,13 @@
 ###
 
 ### Script Settings ----------------------------------------------------------- 
-BASEDIR="/usr/local/src/DNSMasqBlockIffyDomains"
+BASEDIR="/usr/local/src/DNSMasqBlockIffyDomains" # change this to the directory to cloned to. Or copied to.
 GENERATECMD="$BASEDIR/buildListOfDomainsToBlock.py"
 MANUALFILE1="$BASEDIR/domainBlacklist.conf"
 MANUALFILE2="$BASEDIR/domainWhitelist.conf"
+USESCP=0    # set this to a non-zero value if you want this script to copy the output
+            # to another server and restart dnsmaq there
+REMOTEHOST="10.10.10.6" # the remote server where dnsmasq is actually run
 
 ## temp files to use
 TMPFILE="$BASEDIR/dnsmasq.blockeddomains.conf"
@@ -17,6 +20,13 @@ CONFIGDIR="/etc/dnsmasq.d/"
 ## command to reload dnsmasq - change according to your system
 ## not sure if we need this for dnsmasq
 RELOADCMD="/etc/init.d/dnsmasq restart"
+#RELOADCMD="/etc/init.d/dnsmasq status"
+
+## check directory for temp files exists - if not, create it (AM)
+if [ ! -d $BASEDIR ]
+then
+    mkdir -p $BASEDIR
+fi
 
 ## Create manual files if they don't exist
 if  [ ! -s $MANUALFILE1 ]
@@ -57,9 +67,19 @@ then
 fi
 
 ## Move to the destination folder
-mv $TMPFILE $CONFIGDIR
-
+if [ $USESCP -ne 0 ] # if we are using a remote dnsmasq host
+then
+    ## if you are running this script on a different host to the host that dnsmasq is installed on,
+    ## scp the files to that remotehost and restart dnsmasq over there. Requires ssh passwordless login.
+    scp $TMPFILE root@$REMOTEHOST:/etc/dnsmasq.d/.
+    echo "dnsmasq needs to be restarted on $REMOTEHOST to read changes."
+    ssh root@$REMOTEHOST ' service dnsmasq restart '
+    #ssh root@$REMOTEHOST ' service dnsmasq status '
+else 
+    cp $TMPFILE $CONFIGDIR
 ## Restart DNSMasq
-$RELOADCMD
+    $RELOADCMD
+fi
 
-exit
+
+#exit
