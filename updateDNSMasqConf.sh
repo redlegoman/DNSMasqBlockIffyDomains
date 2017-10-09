@@ -10,6 +10,8 @@ MANUALFILE2="$BASEDIR/domainWhitelist.conf"
 USESCP=0    # set this to a non-zero value if you want this script to copy the output
             # to another server and restart dnsmaq there
 REMOTEHOST="10.10.10.6" # the remote server where dnsmasq is actually run
+SCPCMD=/usr/bin/scp
+SSHCMD=/usr/bin/ssh
 
 ## temp files to use
 TMPFILE="$BASEDIR/dnsmasq.blockeddomains.conf"
@@ -71,9 +73,9 @@ if [ $USESCP -ne 0 ] # if we are using a remote dnsmasq host
 then
     ## if you are running this script on a different host to the host that dnsmasq is installed on,
     ## scp the files to that remotehost and restart dnsmasq over there. Requires ssh passwordless login.
-    scp $TMPFILE root@$REMOTEHOST:/etc/dnsmasq.d/.
+    $SCPCMD $TMPFILE root@$REMOTEHOST:/etc/dnsmasq.d/.
     echo "dnsmasq needs to be restarted on $REMOTEHOST to read changes."
-    ssh root@$REMOTEHOST ' service dnsmasq restart '
+    $SSHCMD root@$REMOTEHOST ' service dnsmasq restart '
     #ssh root@$REMOTEHOST ' service dnsmasq status '
 else 
     cp $TMPFILE $CONFIGDIR
